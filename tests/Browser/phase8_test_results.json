@@ -1,0 +1,263 @@
+{
+  "timestamp": "2026-11-09T03:14:23.692Z",
+  "scenarios": {},
+  "dialogs": {
+    "navDialog": {
+      "openedDisplay": "flex",
+      "mainInertDuringNav": true,
+      "navOverlayInert": false,
+      "closedDisplay": "none",
+      "mainInertAfterClose": false,
+      "focusRestored": true
+    },
+    "chatDialog": {
+      "role": "dialog",
+      "ariaModal": null,
+      "isNonModal": true,
+      "openedDisplay": "flex",
+      "inputFocused": true,
+      "closedDisplay": "none",
+      "focusRestored": true
+    }
+  },
+  "chatbot": {
+    "domPurifyClean": true,
+    "xssNeverExecuted": true,
+    "doubleSubmissionLockWorked": true,
+    "loadingStatesResetAfterRequest": true,
+    "unicodeIntact": true
+  },
+  "animationRecovery": {
+    "animationsReadyClassRemoved": true,
+    "allCardsUnclipped": true,
+    "profileImgVisible": true
+  },
+  "reducedMotionCycle": {
+    "normalBaseline": {
+      "hasCustomCursor": true,
+      "animationsReady": true
+    },
+    "reducedState": {
+      "cursorHidden": true,
+      "hasCustomCursorClassRemoved": true,
+      "allCardsVisible": true,
+      "animationsReadyRemoved": true
+    },
+    "restoredNormalState": {
+      "hasCustomCursorRestored": true,
+      "animationsReadyRestored": true,
+      "lenisRealRunning": true
+    }
+  },
+  "visibilityLifecycle": {
+    "simulatedHidden": true,
+    "simulatedVisibleAgain": true,
+    "lenisOperationalNoRunaway": true
+  },
+  "responsivenessAndContrast": {
+    "320px (Mobile Small)": {
+      "viewportWidth": 320,
+      "hasHorizontalOverflow": false,
+      "contrasts": [
+        {
+          "element": "Hero Heading",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "48px",
+          "isLargeText": true
+        },
+        {
+          "element": "Navigation Link",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "20px",
+          "isLargeText": true
+        },
+        {
+          "element": "CTA / Contact Button",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "16px",
+          "isLargeText": false
+        },
+        {
+          "element": "Chat Input Text",
+          "ratio": 1,
+          "passesAA": false,
+          "fontSize": "14px",
+          "isLargeText": false
+        }
+      ]
+    },
+    "768px (Tablet Portrait)": {
+      "viewportWidth": 768,
+      "hasHorizontalOverflow": false,
+      "contrasts": [
+        {
+          "element": "Hero Heading",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "115.2px",
+          "isLargeText": true
+        },
+        {
+          "element": "Navigation Link",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "30px",
+          "isLargeText": true
+        },
+        {
+          "element": "CTA / Contact Button",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "16px",
+          "isLargeText": false
+        },
+        {
+          "element": "Chat Input Text",
+          "ratio": 1,
+          "passesAA": false,
+          "fontSize": "14px",
+          "isLargeText": false
+        }
+      ]
+    },
+    "1280px (Desktop)": {
+      "viewportWidth": 1280,
+      "hasHorizontalOverflow": false,
+      "contrasts": [
+        {
+          "element": "Hero Heading",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "192px",
+          "isLargeText": true
+        },
+        {
+          "element": "Navigation Link",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "30px",
+          "isLargeText": true
+        },
+        {
+          "element": "CTA / Contact Button",
+          "ratio": 18.16,
+          "passesAA": true,
+          "fontSize": "16px",
+          "isLargeText": false
+        },
+        {
+          "element": "Chat Input Text",
+          "ratio": 1,
+          "passesAA": false,
+          "fontSize": "14px",
+          "isLargeText": false
+        }
+      ]
+    }
+  },
+  "mediaLoadingPriorities": {
+    "totalImages": 9,
+    "heroImagePriority": {
+      "src": "http://127.0.0.1:8000/storage/works/01KEB5PF5338GC0GXB357ZSMCA.jpg",
+      "fetchpriority": "high",
+      "loading": null,
+      "isLazy": false,
+      "isHighPriority": true
+    },
+    "belowFoldImagesSample": [
+      {
+        "src": "01KEB4TGGV0T11DCBFJWGXWCY4.jpg",
+        "loading": "lazy",
+        "fetchpriority": null,
+        "hasLazyLoading": true
+      },
+      {
+        "src": "01KEB5PF5338GC0GXB357ZSMCA.jpg",
+        "loading": null,
+        "fetchpriority": "high",
+        "hasLazyLoading": false
+      },
+      {
+        "src": "01KEB5ZVJWR82Q9TQCCSAXBC1T.jpg",
+        "loading": null,
+        "fetchpriority": "high",
+        "hasLazyLoading": false
+      },
+      {
+        "src": "01KEB5PF5338GC0GXB357ZSMCA.jpg",
+        "loading": "lazy",
+        "fetchpriority": null,
+        "hasLazyLoading": true
+      },
+      {
+        "src": "01KEB5ZVJWR82Q9TQCCSAXBC1T.jpg",
+        "loading": "lazy",
+        "fetchpriority": null,
+        "hasLazyLoading": true
+      }
+    ],
+    "nonHeroLazyCompliance": true
+  },
+  "performanceRuns": [
+    {
+      "run": 1,
+      "metrics": {
+        "lcp": 1581,
+        "lcpElement": "HERO_HEADING",
+        "cls": 0,
+        "longTasks": 0,
+        "totalLongTaskDuration": 0,
+        "domContentLoaded": 1120,
+        "loadComplete": 1152
+      },
+      "transfers": {
+        "totalBytes": 1374635,
+        "jsBytes": 159,
+        "cssBytes": 159,
+        "imgBytes": 597
+      },
+      "errors": []
+    },
+    {
+      "run": 2,
+      "metrics": {
+        "lcp": 1253,
+        "lcpElement": "HERO_HEADING",
+        "cls": 0,
+        "longTasks": 0,
+        "totalLongTaskDuration": 0,
+        "domContentLoaded": 188,
+        "loadComplete": 191
+      },
+      "transfers": {
+        "totalBytes": 1374635,
+        "jsBytes": 159,
+        "cssBytes": 159,
+        "imgBytes": 597
+      },
+      "errors": []
+    },
+    {
+      "run": 3,
+      "metrics": {
+        "lcp": 1224,
+        "lcpElement": "HERO_HEADING",
+        "cls": 0,
+        "longTasks": 0,
+        "totalLongTaskDuration": 0,
+        "domContentLoaded": 112,
+        "loadComplete": 115
+      },
+      "transfers": {
+        "totalBytes": 1374635,
+        "jsBytes": 159,
+        "cssBytes": 159,
+        "imgBytes": 597
+      },
+      "errors": []
+    }
+  ]
+}
