@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "test:chat-scroll": "node --experimental-vm-modules --test tests/Frontend/chat-scroll-lock.test.mjs"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",

@@ -30,22 +30,38 @@ export const initChat = (chatRoute, csrfToken, brandName) => {
     });
 
     let savedScrollY = 0;
+    let savedBodyTop = '';
+    let isScrollLocked = false;
+    const desktopViewport = window.matchMedia('(min-width: 640px)');
+
+    const syncScrollLock = () => {
+        const shouldLock = isOpen && !desktopViewport.matches;
+        if (shouldLock === isScrollLocked) return;
+        isScrollLocked = shouldLock;
+
+        if (shouldLock) {
+            savedScrollY = window.scrollY;
+            savedBodyTop = document.body.style.top;
+            document.body.style.top = `-${savedScrollY}px`;
+            document.body.classList.add('chat-open');
+            window.lenis?.stop();
+        } else {
+            document.body.classList.remove('chat-open');
+            document.body.style.top = savedBodyTop;
+            window.lenis?.start();
+            window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+        }
+    };
 
     const toggleChat = () => {
         isOpen = !isOpen;
-        const isMobile = window.innerWidth < 640;
+        syncScrollLock();
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (isOpen) {
             chatToggle.setAttribute('aria-expanded', 'true');
             chatWindow.setAttribute('aria-hidden', 'false');
 
-            if (isMobile) {
-                savedScrollY = window.scrollY;
-                document.body.style.top = `-${savedScrollY}px`;
-                document.body.classList.add('chat-open');
-                window.lenis?.stop();
-            }
             chatWindow.style.display = 'flex';
             if (prefersReduced) {
                 gsap.set(chatWindow, { opacity: 1, y: 0, scale: 1, pointerEvents: 'auto' });
@@ -65,12 +81,6 @@ export const initChat = (chatRoute, csrfToken, brandName) => {
             chatToggle.setAttribute('aria-expanded', 'false');
             chatWindow.setAttribute('aria-hidden', 'true');
 
-            if (isMobile) {
-                document.body.classList.remove('chat-open');
-                document.body.style.top = '';
-                window.lenis?.start();
-                window.scrollTo({ top: savedScrollY, behavior: 'instant' });
-            }
             if (prefersReduced) {
                 gsap.set(chatWindow, { opacity: 0, y: 30, scale: 0.9, pointerEvents: 'none' });
                 chatWindow.style.display = 'none';
@@ -87,6 +97,7 @@ export const initChat = (chatRoute, csrfToken, brandName) => {
 
     chatToggle.addEventListener('click', toggleChat);
     chatClose.addEventListener('click', toggleChat);
+    desktopViewport.addEventListener('change', syncScrollLock);
 
     // ESC Key Closure
     window.addEventListener('keydown', (e) => {
