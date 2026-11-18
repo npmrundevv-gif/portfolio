@@ -36,12 +36,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 {{ $gridClass }} {{ $gapClass }}">
             @foreach($section->works->where('enabled', true) as $work)
                 @php
+                    $workUrl = \App\Models\SiteSetting::isSafeUrl($work->url, true) ? trim($work->url) : null;
+                    $isWorkExternal = in_array(strtolower(parse_url($workUrl ?? '', PHP_URL_SCHEME) ?? ''), ['http', 'https'], true);
                     $hasWorkImage = !empty($work->image_path) && Storage::disk('public')->exists($work->image_path);
                 @endphp
                 <div class="work-item relative aspect-square overflow-hidden group bg-white/5 reveal-card">
                     @if($hasWorkImage)
                         <img src="{{ Storage::disk('public')->url($work->image_path) }}" alt="{{ $work->title }}"
-                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 transition-all duration-1000"
+                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-focus-within:grayscale-0 scale-110 group-hover:scale-100 group-focus-within:scale-100 transition-all duration-1000"
                             @if($loop->iteration <= 2) fetchpriority="high" @else loading="lazy" decoding="async" @endif>
                     @else
                         <div class="w-full h-full flex items-center justify-center bg-white/[0.02] text-white/10 text-6xl font-black" aria-hidden="true">
@@ -49,11 +51,11 @@
                         </div>
                     @endif
                     <div
-                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-10 text-center">
-                        <h3 class="text-2xl font-black tracking-tighter uppercase mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{{ $work->title }}</h3>
+                        class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-10 text-center">
+                        <h3 class="text-2xl font-black tracking-tighter uppercase mb-2 transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-500">{{ $work->title }}</h3>
 
                         <div
-                            class="flex gap-2 flex-wrap justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                            class="flex gap-2 flex-wrap justify-center transform translate-y-4 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-500 delay-100">
                             @if($work->tags)
                                 @foreach($work->tags as $tag)
                                     <span class="text-[0.6rem] tracking-widest uppercase opacity-60">{{ $tag }}</span>
@@ -61,6 +63,12 @@
                             @endif
                         </div>
                     </div>
+                    @if($workUrl)
+                        <a href="{{ $workUrl }}"
+                            @if($isWorkExternal) target="_blank" rel="noopener noreferrer" @endif
+                            aria-label="View project: {{ $work->title }}"
+                            class="absolute inset-0 z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-green-400"></a>
+                    @endif
                 </div>
             @endforeach
         </div>
