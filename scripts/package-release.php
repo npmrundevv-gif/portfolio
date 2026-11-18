@@ -112,8 +112,7 @@ foreach ($publicDirs as $pd) {
         copyDirectory($src, $dst);
     }
 }
-mkdir($stagingDir . '/public/storage', 0755, true);
-file_put_contents($stagingDir . '/public/storage/.gitignore', "*\n!.gitignore\n");
+// Leave public/storage absent so storage:link can create the deployment-specific symlink.
 echo "      + Copied public/ (production assets and build manifest included; hot/storage links excluded)\n";
 
 // Create clean storage structure with .gitignore placeholders

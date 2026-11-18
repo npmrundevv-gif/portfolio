@@ -145,6 +145,8 @@ This produces `dist/portfolio-release-vX.Y.Z-<timestamp>.zip` and a matching `.s
 
 **The release archive does NOT include `vendor/`.** Run `composer install --no-dev` on the deployment server after extracting.
 
+The archive includes an empty `storage/app/public/` directory and leaves `public/storage` absent. Run `php artisan storage:link` after extraction to create the symlink for that server. If an older ZIP has left a regular `public/storage` directory, check its contents and move it aside before creating the symlink.
+
 ### Steps
 
 ```bash
