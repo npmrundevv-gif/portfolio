@@ -8,7 +8,7 @@ A dynamic, creative portfolio built with **Laravel 12**, **Filament 4**, **Livew
 
 | Dependency | Minimum | Tested On |
 |---|---|---|
-| PHP | ^8.4.1 (declared `^8.2`; transitive deps require ≥ 8.4.1) | 8.5.1 |
+| PHP | ^8.4.1 | 8.4.27 |
 | Node.js | ^20.19.0 or ≥22.12.0 (required by Vite) | v24.19.0 |
 | Composer | ≥ 2.0 | 2.8.5 |
 | npm | ≥ 10.0 | 11.17.0 |

@@ -8,7 +8,7 @@ Step-by-step instructions to deploy this Laravel + Filament portfolio site from 
 
 | Requirement | Minimum | Notes |
 |---|---|---|
-| PHP | 8.4.1+ | Extensions: mbstring, openssl, pdo, tokenizer, xml, ctype, json, bcmath, fileinfo |
+| PHP | 8.4.1+ (8.x) | Extensions: mbstring, openssl, pdo, tokenizer, xml, ctype, json, bcmath, fileinfo |
 | Composer | 2.x | Required to install PHP dependencies on the server |
 | Node.js + npm | 20.19.0+ or 22.12.0+ | Only needed if building assets on the server |
 | MySQL | 8.0+ (or MariaDB 10.6+) | SQLite is for local development only |
@@ -23,6 +23,7 @@ Step-by-step instructions to deploy this Laravel + Filament portfolio site from 
 
 ```bash
 composer install --no-dev --prefer-dist --optimize-autoloader
+composer check-platform-reqs --no-dev
 ```
 
 ### 2. Install and build front-end assets
