@@ -25,5 +25,8 @@
         "lenis": "^1.3.17",
         "marked": "^18.0.14",
         "split-type": "^0.3.4"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "^4.68.7"
     }
 }
