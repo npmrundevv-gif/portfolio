@@ -2,12 +2,16 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+    const port = parseInt(process.env.VITE_PORT || '5173');
+
+    return {
     server: {
         host: '0.0.0.0',
-        port: 5173,
+        port,
         hmr: {
             host: 'localhost',
+            clientPort: port,
         },
         watch: {
             usePolling: true,
@@ -20,5 +24,6 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+};
 });
 

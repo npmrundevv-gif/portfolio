@@ -23,11 +23,10 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        try {
-            $settings = \App\Models\SiteSetting::first();
-        } catch (\Exception $e) {
-            $settings = null;
-        }
+        $getLogoUrl = fn () => rescue(function () {
+            $path = \App\Models\SiteSetting::first()?->favicon_path;
+            return $path ? asset('storage/' . $path) : null;
+        }, null, false);
 
         return $panel
             ->default()
@@ -39,8 +38,8 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->favicon($settings && $settings->favicon_path ? asset('storage/' . $settings->favicon_path) : null)
-            ->brandLogo($settings && $settings->favicon_path ? asset('storage/' . $settings->favicon_path) : null)
+            ->favicon($getLogoUrl)
+            ->brandLogo($getLogoUrl)
             ->brandLogoHeight('3rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

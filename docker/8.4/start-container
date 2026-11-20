@@ -9,6 +9,13 @@ if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER sail
 fi
 
+# Disable Xdebug when not needed (massive performance boost)
+if [ "${XDEBUG_MODE:-off}" = "off" ]; then
+    if [ -f /etc/php/8.4/cli/conf.d/20-xdebug.ini ]; then
+        mv /etc/php/8.4/cli/conf.d/20-xdebug.ini /etc/php/8.4/cli/conf.d/20-xdebug.ini.disabled 2>/dev/null || true
+    fi
+fi
+
 if [ ! -d /.composer ]; then
     mkdir /.composer
 fi
@@ -22,5 +29,13 @@ if [ $# -gt 0 ]; then
         exec gosu $WWWUSER "$@"
     fi
 else
+    if [ ! -f /var/www/html/vendor/autoload.php ]; then
+        echo "vendor/autoload.php not found. Installing composer dependencies..."
+        if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
+            composer install --no-interaction --prefer-dist
+        else
+            gosu $WWWUSER composer install --no-interaction --prefer-dist
+        fi
+    fi
     exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
