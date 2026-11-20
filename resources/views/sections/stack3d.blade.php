@@ -1,4 +1,4 @@
-` <section id="{{ $section->getAnchorId() }}" class="py-40 bg-black overflow-hidden relative min-h-screen flex items-center">
+ <section id="{{ $section->getAnchorId() }}" class="py-40 bg-black overflow-hidden relative min-h-screen flex items-center">
     <div class="container mx-auto px-6 relative z-10">
         <div class="flex flex-col md:flex-row gap-20 items-center">
             <div class="w-full md:w-1/2">
