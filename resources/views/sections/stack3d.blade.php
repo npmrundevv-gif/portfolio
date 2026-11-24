@@ -32,10 +32,11 @@
             </div>
             
             <div class="w-full md:w-1/2 h-[500px] flex items-center justify-center relative perspective-2000">
-                <div class="w-64 h-64 bg-white/5 border border-white/10 flex items-center justify-center" id="stack-cube">
-                    <!-- Default State -->
-                    <img id="cube-image" src="" alt="Tech Stack" class="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] hidden">
-                    <span id="cube-text" class="text-8xl font-black tracking-tighter opacity-20 text-green-400">{{ $section->data['cube_text'] ?? 'PHP' }}</span>
+                <div id="stack-rotor">
+                    <div class="w-64 h-64 bg-white/5 border border-white/10 flex items-center justify-center" id="stack-cube">
+                        <img id="cube-image" src="" alt="Tech Stack" class="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] hidden">
+                        <span id="cube-text" class="text-8xl font-black tracking-tighter opacity-20 text-green-400">{{ $section->data['cube_text'] ?? 'PHP' }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,18 +67,24 @@
         perspective: 2000px; 
     }
     
+    #stack-rotor {
+        transform-style: preserve-3d;
+    }
+
     #stack-cube {
-        --stack-tilt: 0deg;
-        --stack-turn: 0deg;
-        --stack-scale: 1;
         --stack-glow: 0.2;
         --stack-hover-glow: 0;
         --stack-shadow: 0 0 calc(30px + 100px * var(--stack-glow)) rgba(74, 222, 128, calc(var(--stack-glow) + var(--stack-hover-glow)));
         box-shadow: var(--stack-shadow);
-        transform: rotateX(calc(12deg + var(--stack-tilt))) rotateY(calc(12deg + var(--stack-turn))) rotateZ(3deg) scale(var(--stack-scale));
+        transform: rotateX(12deg) rotateY(12deg) rotateZ(3deg);
         transform-style: preserve-3d;
         animation: greenGlitch 3s infinite;
         position: relative;
+    }
+
+    #cube-image,
+    #cube-text {
+        backface-visibility: hidden;
     }
 
     @media (hover: hover) and (prefers-reduced-motion: no-preference) {
