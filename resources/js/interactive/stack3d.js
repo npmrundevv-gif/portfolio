@@ -10,7 +10,53 @@ export const initStack3D = () => {
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let activeRow;
+    let displayedRow;
     let previewAnimation;
+    let revealAnimation;
+    const cubeMotionProps = '--stack-tilt,--stack-turn,--stack-scale,--stack-glow,backgroundColor';
+
+    const showPreview = () => {
+        if (displayedRow === activeRow) return;
+        displayedRow = activeRow;
+
+        const { name, image } = displayedRow.dataset;
+        if (image) {
+            cubeImage.src = image;
+            cubeImage.alt = name;
+        } else {
+            cubeText.textContent = name;
+            cubeText.classList.remove('opacity-20');
+        }
+        cubeImage.classList.toggle('hidden', !image);
+        cubeText.classList.toggle('hidden', Boolean(image));
+
+        revealAnimation?.kill();
+        gsap.set([cubeImage, cubeText], { clearProps: 'opacity,transform' });
+        if (!reducedMotion.matches) {
+            revealAnimation = gsap.from(image ? cubeImage : cubeText, {
+                opacity: 0,
+                scale: image ? 0.5 : 0.85,
+                duration: 0.2,
+                ease: 'power2.out',
+                clearProps: 'opacity,transform',
+            });
+        }
+    };
+
+    const stopMotion = () => {
+        previewAnimation?.kill();
+        previewAnimation = undefined;
+        revealAnimation?.kill();
+        gsap.set(cube, { clearProps: cubeMotionProps });
+        gsap.set([cubeImage, cubeText], { clearProps: 'opacity,transform' });
+    };
+
+    reducedMotion.addEventListener('change', () => {
+        if (reducedMotion.matches && activeRow) {
+            stopMotion();
+            showPreview();
+        }
+    });
 
     const selectRow = (row) => {
         if (activeRow === row) return;
@@ -21,29 +67,40 @@ export const initStack3D = () => {
         row.classList.add('is-active');
         row.setAttribute('aria-pressed', 'true');
 
-        const { name, image } = row.dataset;
-        if (image) {
-            cubeImage.src = image;
-            cubeImage.alt = name;
-        } else {
-            cubeText.textContent = name;
-        }
-        cubeImage.classList.toggle('hidden', !image);
-        cubeText.classList.toggle('hidden', Boolean(image));
-
-        previewAnimation?.kill();
         if (reducedMotion.matches) {
-            gsap.set(cube, { clearProps: 'transform' });
+            showPreview();
             return;
         }
 
-        previewAnimation = gsap.fromTo(cube, { rotationY: -20, scale: 0.93 }, {
-            rotationY: 12,
-            scale: 1,
-            duration: 0.35,
-            ease: 'power2.out',
-            clearProps: 'transform',
-        });
+        // Let the current flip finish. The swap reads the latest selection.
+        if (previewAnimation) {
+            if (previewAnimation.time() >= previewAnimation.labels.swap) showPreview();
+            return;
+        }
+
+        previewAnimation = gsap.timeline({
+            onComplete: () => { previewAnimation = undefined; },
+        })
+            .to(cube, {
+                '--stack-scale': 0.8,
+                '--stack-tilt': '10deg',
+                '--stack-turn': '360deg',
+                duration: 0.6,
+                ease: 'back.in(1.7)',
+                '--stack-glow': 0.8,
+                backgroundColor: 'rgba(74, 222, 128, 0.1)',
+            })
+            .addLabel('swap', '-=0.2')
+            .call(showPreview, [], 'swap')
+            .to(cube, {
+                '--stack-scale': 1,
+                '--stack-tilt': '0deg',
+                duration: 0.5,
+                ease: 'elastic.out(1, 0.5)',
+                '--stack-glow': 0.2,
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                clearProps: cubeMotionProps,
+            });
     };
 
     stackList.querySelectorAll('.stack-row').forEach((row) => {
