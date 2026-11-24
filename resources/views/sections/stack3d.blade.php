@@ -12,16 +12,17 @@
                             $hasItemImage = !empty($item->image_path) && Storage::disk('public')->exists($item->image_path);
                             $itemImageUrl = $hasItemImage ? Storage::disk('public')->url($item->image_path) : '';
                         @endphp
-                        <div class="stack-row group cursor-pointer relative z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-4 focus-visible:ring-offset-black rounded"
+                        <div class="stack-row cursor-pointer relative z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-4 focus-visible:ring-offset-black rounded"
                              tabindex="0"
                              role="button"
+                             aria-pressed="false"
                              aria-label="Select {{ $item->name }} technology"
                              data-name="{{ $item->name }}"
                              data-image="{{ $itemImageUrl }}">
-                            <div class="text-4xl md:text-6xl font-black tracking-tighter opacity-20 group-hover:opacity-100 group-hover:text-green-400 transition-all duration-500 transform group-hover:translate-x-4">
+                            <div class="stack-label text-4xl md:text-6xl font-black tracking-tighter opacity-20">
                                 {{ $item->name }}
                             </div>
-                            <div class="w-0 group-hover:w-full h-[1px] bg-green-400 mt-2 transition-all duration-500"></div>
+                            <div class="stack-underline w-0 h-[1px] bg-green-400 mt-2"></div>
                         </div>
                     @empty
                         <p class="text-white/40 text-sm tracking-wider uppercase font-mono">Technologies currently in development</p>
@@ -31,10 +32,10 @@
             </div>
             
             <div class="w-full md:w-1/2 h-[500px] flex items-center justify-center relative perspective-2000">
-                <div class="w-64 h-64 bg-white/5 border border-white/10 group-hover:border-green-400/50 flex items-center justify-center transform rotate-x-12 rotate-y-12 rotate-z-3 hover:translate-z-20 transition-all duration-1000 shadow-[0_0_50px_rgba(255,255,255,0.05)] hover:shadow-[0_0_50px_rgba(74,222,128,0.2)]" id="stack-cube">
+                <div class="w-64 h-64 bg-white/5 border border-white/10 flex items-center justify-center transform rotate-x-12 rotate-y-12 rotate-z-3 shadow-[0_0_50px_rgba(255,255,255,0.05)]" id="stack-cube">
                     <!-- Default State -->
-                    <img id="cube-image" src="" alt="Tech Stack" class="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] hidden transition-all duration-300">
-                    <span id="cube-text" class="text-8xl font-black tracking-tighter opacity-20 text-green-400 transition-all duration-300">{{ $section->data['cube_text'] ?? 'PHP' }}</span>
+                    <img id="cube-image" src="" alt="Tech Stack" class="w-32 h-32 object-contain drop-shadow-[0_0_15px_rgba(74,222,128,0.5)] hidden">
+                    <span id="cube-text" class="text-8xl font-black tracking-tighter opacity-20 text-green-400">{{ $section->data['cube_text'] ?? 'PHP' }}</span>
                 </div>
             </div>
         </div>
@@ -44,16 +45,21 @@
 
 
 <style>
-    /* Sticky Hover styles when active */
-    .stack-row.is-active div:first-child {
-        opacity: 1 !important;
-        color: rgb(74 222 128) !important; /* text-green-400 */
-        transform: translateX(1rem) !important; /* translate-x-4 */
+    .stack-label,
+    .stack-underline {
+        transition-property: none;
     }
-    
-    .stack-row.is-active div:last-child {
-        width: 100% !important;
+
+    .stack-row.is-active .stack-label {
+        opacity: 1;
+        color: rgb(74 222 128);
+        translate: 1rem;
     }
+
+    .stack-row.is-active .stack-underline {
+        width: 100%;
+    }
+
     .perspective-2000 { 
         perspective: 2000px; 
     }
@@ -95,19 +101,19 @@
             box-shadow: 0 0 50px rgba(74, 222, 128, 0.2);
         }
         92% {
-            transform: translate(-2px, 1px);
+            translate: -2px 1px;
             box-shadow: 0 0 80px rgba(74, 222, 128, 0.6), -3px 0 0 rgba(74, 222, 128, 0.8);
         }
         94% {
-            transform: translate(2px, -1px);
+            translate: 2px -1px;
             box-shadow: 0 0 80px rgba(74, 222, 128, 0.6), 3px 0 0 rgba(34, 197, 94, 0.8);
         }
         96% {
-            transform: translate(-1px, 2px);
+            translate: -1px 2px;
             box-shadow: 0 0 60px rgba(74, 222, 128, 0.4);
         }
         98% {
-            transform: translate(1px, -1px);
+            translate: 1px -1px;
         }
     }
 
@@ -147,72 +153,12 @@
         }
     }
 
-    /* Transition Out */
-    .cube-transitioning-out {
-        animation: smoothTransitionOut 0.3s ease-in-out forwards !important;
-    }
-
-    /* Transition In */
-    .cube-transitioning-in {
-        animation: smoothTransitionIn 0.4s ease-out forwards !important;
-    }
-
-    @keyframes smoothTransitionOut {
-        0% {
-            transform: none;
-            opacity: 1;
-            filter: blur(0px);
-            box-shadow: 0 0 50px rgba(74, 222, 128, 0.2);
+    @media (prefers-reduced-motion: reduce) {
+        #stack-cube,
+        #stack-cube::before,
+        #stack-cube::after {
+            animation: none;
         }
-        100% {
-            transform: perspective(1000px) rotateY(90deg) scale(0.9);
-            opacity: 0.3;
-            filter: blur(4px);
-            box-shadow: 0 0 100px rgba(74, 222, 128, 0.7);
-        }
-    }
-
-    @keyframes smoothTransitionIn {
-        0% {
-            transform: perspective(1000px) rotateY(-90deg) scale(0.9);
-            opacity: 0.3;
-            filter: blur(4px);
-            box-shadow: 0 0 100px rgba(74, 222, 128, 0.7);
-        }
-        100% {
-            transform: none;
-            opacity: 1;
-            filter: blur(0px);
-            box-shadow: 0 0 50px rgba(74, 222, 128, 0.2);
-        }
-    }
-
-    /* Simple Fade + Scale Reveal */
-    .content-reveal {
-        animation: simpleReveal 0.5s ease-out forwards;
-    }
-
-    @keyframes simpleReveal {
-        0% {
-            opacity: 0;
-            transform: scale(0.85);
-        }
-        100% {
-            opacity: 1;
-            transform: none;
-        }
-    }
-
-    /* Base content styles */
-    #cube-image, #cube-text {
-        /* No transition - let animation handle it */
-    }
-
-    /* Enhanced hover */
-    #stack-cube:hover {
-        box-shadow: 0 0 80px rgba(74, 222, 128, 0.4);
-        transform: scale(1.02);
-        transition: all 0.3s ease;
     }
 
     /* Mobile Responsive - Cube as Background */
@@ -236,11 +182,6 @@
             height: 200px;
             opacity: 0.3;
             pointer-events: none;
-        }
-
-        #stack-cube.cube-transitioning-out,
-        #stack-cube.cube-transitioning-in {
-            opacity: 0.5;
         }
 
         #cube-image {
