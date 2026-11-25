@@ -3,6 +3,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 
 gsap.registerPlugin(ScrollTrigger);
+// Safari's collapsing toolbar changes height without changing the page layout.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export const restoreReadableContent = () => {
     document.documentElement.classList.remove('animations-ready');
@@ -282,6 +284,7 @@ export const initGsapAnimations = (lenis) => {
     // that add pin-spacers, we must ensure they calculate their offsets top-to-bottom.
     ScrollTrigger.sort();
     ScrollTrigger.refresh();
+    document.fonts?.ready.then(() => ScrollTrigger.refresh(true));
 };
 
 /**
@@ -558,16 +561,11 @@ function initPinnedProjects() {
     // 3D Tilt for cards
     initProjectCardsTilt(cards);
 
-    // Refresh on resize
-    window.addEventListener('resize', () => ScrollTrigger.refresh());
-
-    // Refresh on images load
+    // Let ScrollTrigger handle real resizes; defer late image measurements until scrolling settles.
     const images = track.querySelectorAll('img');
     images.forEach((img) => {
-        if (img.complete) {
-            ScrollTrigger.refresh();
-        } else {
-            img.addEventListener('load', () => ScrollTrigger.refresh());
+        if (!img.complete) {
+            img.addEventListener('load', () => ScrollTrigger.refresh(true), { once: true });
         }
     });
 
@@ -1217,26 +1215,12 @@ function initPinnedTimeline() {
         }
     });
 
-    // Refresh on resize
-    window.addEventListener('resize', () => ScrollTrigger.refresh());
-
-    // Refresh on images load
+    // Let ScrollTrigger handle real resizes; defer late image measurements until scrolling settles.
     const images = track.querySelectorAll('img');
     images.forEach((img) => {
-        if (img.complete) {
-            ScrollTrigger.refresh();
-        } else {
-            img.addEventListener('load', () => ScrollTrigger.refresh());
+        if (!img.complete) {
+            img.addEventListener('load', () => ScrollTrigger.refresh(true), { once: true });
         }
     });
 
-    // Fallback refresh to catch webfont loading or layout shifts
-    setTimeout(() => {
-        ScrollTrigger.sort();
-        ScrollTrigger.refresh();
-    }, 500);
-    setTimeout(() => {
-        ScrollTrigger.sort();
-        ScrollTrigger.refresh();
-    }, 1500);
 }

@@ -1,4 +1,12 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+@source "../views";
+@source "../js";
+@source "../../app";
+
+@utility stable-screen {
+    height: 100vh;
+    height: 100svh;
+}
 
 @theme {
     --font-heading: 'Outfit', sans-serif;
@@ -614,6 +622,7 @@
        ═══════════════════════════════════════════════ */
     .testimonials-viewport {
         height: 100vh;
+        height: 100svh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -860,6 +869,7 @@
 
     .timeline-viewport {
         height: 100vh;
+        height: 100svh;
         display: flex;
         align-items: center;
         justify-content: flex-start;

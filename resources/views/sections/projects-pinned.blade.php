@@ -31,7 +31,7 @@
     </div>
 
     {{-- Pinned Viewport --}}
-    <div class="projects-viewport h-screen relative" data-projects-viewport>
+    <div class="projects-viewport stable-screen relative" data-projects-viewport>
         {{-- Horizontal Track --}}
         <div class="projects-track flex items-center gap-8 px-6 h-full will-change-transform" data-projects-track>
             {{-- Leading Spacer --}}

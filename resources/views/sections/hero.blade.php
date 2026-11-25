@@ -1,5 +1,5 @@
 <section id="{{ $section->getAnchorId() }}"
-    class="h-screen w-full flex flex-col justify-center items-center text-center p-6 relative isolate overflow-hidden">
+    class="stable-screen w-full flex flex-col justify-center items-center text-center p-6 relative isolate overflow-hidden">
     <!-- Background elements -->
     <div class="absolute inset-0 z-[1] bg-gradient-to-b from-black/30 via-black/50 to-black pointer-events-none"></div>
     @php
