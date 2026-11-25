@@ -9,7 +9,7 @@
     @php
         $seoDescription = (!empty($settings->hero_subtitle) ? trim($settings->hero_subtitle) . ' — ' : '') . "Official portfolio of {$settings->brand_name}. Specialist in custom jersey designs, apparel printing, and modern digital craft.";
         $seoImage = ($settings->hero_image_path && Storage::disk('public')->exists($settings->hero_image_path))
-            ? Storage::disk('public')->url($settings->hero_image_path)
+            ? url(Storage::disk('public')->url($settings->hero_image_path))
             : null;
     @endphp
     <meta name="description" content="{{ $seoDescription }}">
