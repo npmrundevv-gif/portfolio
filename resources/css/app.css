@@ -179,6 +179,10 @@
         opacity: 0.45;
     }
 
+    .project-card.is-spotlight .project-card-cta {
+        opacity: 1;
+    }
+
     /* Focus-visible mirrors hover spotlight */
     .project-card:focus-visible {
         filter: grayscale(0);

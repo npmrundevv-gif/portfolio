@@ -517,6 +517,8 @@ function initPinnedProjects() {
 
     if (!section || !viewport || !track || cards.length === 0) return;
 
+    const updateCardSpotlight = initCardSpotlight(cards, viewport);
+
     // Calculate horizontal scroll distance
     const getScrollDistance = () => track.scrollWidth - viewport.clientWidth;
 
@@ -524,6 +526,7 @@ function initPinnedProjects() {
     const projectST = gsap.to(track, {
         x: () => -getScrollDistance(),
         ease: 'none',
+        onUpdate: updateCardSpotlight,
         scrollTrigger: {
             trigger: viewport,
             start: 'top top',
@@ -532,7 +535,9 @@ function initPinnedProjects() {
             anticipatePin: 1,
             scrub: 0.5,
             invalidateOnRefresh: true,
+            onRefresh: updateCardSpotlight,
             onUpdate: (self) => {
+                updateCardSpotlight();
                 if (progressBar) {
                     gsap.set(progressBar, { width: `${self.progress * 100}%` });
                 }
@@ -566,18 +571,20 @@ function initPinnedProjects() {
         }
     });
 
-    // Spotlight Hover/Focus Behavior
-    initCardSpotlight(cards);
 }
 
 /**
  * Premium hover/focus spotlight effect for project cards
  * Lifts target card, dims siblings
  */
-function initCardSpotlight(cards) {
-    if (!cards || cards.length === 0) return;
+function initCardSpotlight(cards, viewport) {
+    const automaticSpotlight = window.matchMedia('(max-width: 1023px), (hover: none), (pointer: coarse)');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let spotlightCard = null;
 
     const activateSpotlight = (targetCard) => {
+        if (spotlightCard === targetCard) return;
+        spotlightCard = targetCard;
         cards.forEach((card) => {
             if (card === targetCard) {
                 card.classList.add('is-spotlight');
@@ -590,15 +597,54 @@ function initCardSpotlight(cards) {
     };
 
     const deactivateSpotlight = () => {
+        spotlightCard = null;
         cards.forEach((card) => {
             card.classList.remove('is-spotlight', 'is-dimmed');
         });
     };
 
+    const updateCenteredCard = () => {
+        if (!automaticSpotlight.matches || reducedMotion.matches) return;
+
+        const bounds = viewport.getBoundingClientRect();
+        if (bounds.bottom <= 0 || bounds.top >= window.innerHeight) {
+            deactivateSpotlight();
+            return;
+        }
+
+        let centeredCard = null;
+        let nearestDistance = Infinity;
+        cards.forEach((card) => {
+            const rect = card.getBoundingClientRect();
+            if (rect.right <= 0 || rect.left >= window.innerWidth) return;
+            const distance = Math.abs((rect.left + rect.right) / 2 - window.innerWidth / 2);
+            if (distance < nearestDistance) {
+                centeredCard = card;
+                nearestDistance = distance;
+            }
+        });
+
+        if (centeredCard) activateSpotlight(centeredCard);
+        else deactivateSpotlight();
+    };
+
+    const refreshSpotlightMode = () => {
+        deactivateSpotlight();
+        updateCenteredCard();
+    };
+    automaticSpotlight.addEventListener('change', refreshSpotlightMode);
+    reducedMotion.addEventListener('change', refreshSpotlightMode);
+    const visibilityObserver = new IntersectionObserver(updateCenteredCard);
+    visibilityObserver.observe(viewport);
+
     cards.forEach((card) => {
         // Mouse events
-        card.addEventListener('mouseenter', () => activateSpotlight(card));
-        card.addEventListener('mouseleave', deactivateSpotlight);
+        card.addEventListener('mouseenter', () => {
+            if (!automaticSpotlight.matches) activateSpotlight(card);
+        });
+        card.addEventListener('mouseleave', () => {
+            if (!automaticSpotlight.matches) deactivateSpotlight();
+        });
 
         // Focus events (keyboard accessibility)
         card.addEventListener('focusin', () => activateSpotlight(card));
@@ -608,9 +654,12 @@ function initCardSpotlight(cards) {
             const isStillInCards = Array.from(cards).some((c) => c.contains(relatedTarget));
             if (!isStillInCards) {
                 deactivateSpotlight();
+                updateCenteredCard();
             }
         });
     });
+
+    return updateCenteredCard;
 }
 
 /**

@@ -98,7 +98,7 @@
 
                             {{-- Arrow Indicator --}}
                             <div
-                                class="flex items-center gap-4 mt-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300">
+                                class="project-card-cta flex items-center gap-4 mt-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300">
                                 <span class="text-xs tracking-[0.3em] uppercase text-green-400">Explore</span>
                                 <span class="w-8 h-[1px] bg-green-400"></span>
                             </div>
